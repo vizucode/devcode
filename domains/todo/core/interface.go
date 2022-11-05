@@ -1,7 +1,7 @@
 package todocore
 
 type IRepoTodo interface {
-	Create(todoCore Core) (Core, error)
+	Insert(todoCore Core) (Core, error)
 	Update(todoCore Core) (Core, error)
 	Delete(todoCore Core) (Core, error)
 	GetAll() ([]Core, error)
@@ -9,7 +9,7 @@ type IRepoTodo interface {
 }
 
 type IServiceTodo interface {
-	Insert(todoCore Core) Core
+	Create(todoCore Core) Core
 	Update(todoCore Core) Core
 	Delete(todoCore Core) Core
 	FindAll() []Core
