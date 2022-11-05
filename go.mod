@@ -12,6 +12,7 @@ require (
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/gofiber/fiber/v2 v2.39.0 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
