@@ -12,6 +12,6 @@ type IServiceActivity interface {
 	Create(activityCore Core) Core
 	Update(activityCore Core) Core
 	Delete(activityCore Core) Core
-	GetAll() []Core
-	GetSingle(activityCore Core) Core
+	FindAll() []Core
+	FindSingle(activityCore Core) Core
 }
