@@ -12,6 +12,6 @@ type IServiceTodo interface {
 	Create(todoCore Core) Core
 	Update(todoCore Core) Core
 	Delete(todoCore Core) Core
-	FindAll() []Core
+	FindAll(todoCore Core) []Core
 	FindById(todoCore Core) Core
 }

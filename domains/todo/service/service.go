@@ -33,7 +33,7 @@ func (r *todoService) Update(todoCore todocore.Core) todocore.Core {
 		if err != gorm.ErrRecordNotFound {
 			panic(exceptions.NewInternalServerError(err.Error()))
 		} else {
-			msg := fmt.Sprintf("Activity with ID %d Not Found", todoCore.Id)
+			msg := fmt.Sprintf("Todo with ID %d Not Found", todoCore.Id)
 			panic(exceptions.NewNotFoundError(msg))
 		}
 	}
@@ -47,7 +47,7 @@ func (r *todoService) Delete(todoCore todocore.Core) todocore.Core {
 		if err != gorm.ErrRecordNotFound {
 			panic(exceptions.NewInternalServerError(err.Error()))
 		} else {
-			msg := fmt.Sprintf("Activity with ID %d Not Found", todoCore.Id)
+			msg := fmt.Sprintf("Todo with ID %d Not Found", todoCore.Id)
 			panic(exceptions.NewNotFoundError(msg))
 		}
 	}
@@ -74,7 +74,7 @@ func (r *todoService) FindById(todoCore todocore.Core) todocore.Core {
 		if err != gorm.ErrRecordNotFound {
 			panic(exceptions.NewInternalServerError(err.Error()))
 		} else {
-			msg := fmt.Sprintf("Activity with ID %d Not Found", todoCore.Id)
+			msg := fmt.Sprintf("Todo with ID %d Not Found", todoCore.Id)
 			panic(exceptions.NewNotFoundError(msg))
 		}
 	}
