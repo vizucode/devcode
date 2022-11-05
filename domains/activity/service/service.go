@@ -3,6 +3,7 @@ package activityservice
 import (
 	activitycore "devcode/domains/activity/core"
 	"devcode/exceptions"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -31,7 +32,13 @@ func (s *activityService) Update(activityCore activitycore.Core) activitycore.Co
 	result, err := s.repo.Update(activityCore)
 
 	if err != nil {
-		panic(exceptions.NewInternalServerError(err.Error()))
+		if err == gorm.ErrRecordNotFound {
+			panic(exceptions.NewNotFoundError(err.Error()))
+
+		} else {
+			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
+			panic(exceptions.NewInternalServerError(msg))
+		}
 	}
 
 	return result
@@ -70,7 +77,8 @@ func (s *activityService) FindSingle(activityCore activitycore.Core) activitycor
 			panic(exceptions.NewNotFoundError(err.Error()))
 
 		} else {
-			panic(exceptions.NewInternalServerError(err.Error()))
+			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
+			panic(exceptions.NewInternalServerError(msg))
 		}
 	}
 
