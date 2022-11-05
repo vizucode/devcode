@@ -30,8 +30,16 @@ func (r *activityRepo) Insert(activityCore activitycore.Core) (activitycore.Core
 
 func (r *activityRepo) Update(activityCore activitycore.Core) (activitycore.Core, error) {
 	model := activityModel.ToModel(activityCore)
-	tx := r.db.Where("id", model.ID).Updates(&model)
+	tx := r.db.Model(activityModel.Activity{}).Where("id", activityCore.Id).Updates(&model)
+	if tx.Error != nil {
+		return activitycore.Core{}, tx.Error
+	}
 
+	if tx.RowsAffected < 1 {
+		return activitycore.Core{}, gorm.ErrRecordNotFound
+	}
+
+	tx = r.db.Model(activityModel.Activity{}).First(&model)
 	if tx.Error != nil {
 		return activitycore.Core{}, tx.Error
 	}
@@ -41,10 +49,14 @@ func (r *activityRepo) Update(activityCore activitycore.Core) (activitycore.Core
 
 func (r *activityRepo) Delete(activityCore activitycore.Core) (activitycore.Core, error) {
 	model := activityModel.ToModel(activityCore)
-	tx := r.db.Delete(&model)
+	tx := r.db.Where("id", activityCore.Id).Delete(&model)
 
 	if tx.Error != nil {
 		return activitycore.Core{}, tx.Error
+	}
+
+	if tx.RowsAffected < 1 {
+		return activitycore.Core{}, gorm.ErrRecordNotFound
 	}
 
 	return activityModel.ToCore(model), nil
@@ -52,7 +64,7 @@ func (r *activityRepo) Delete(activityCore activitycore.Core) (activitycore.Core
 
 func (r *activityRepo) GetAll() ([]activitycore.Core, error) {
 	model := []activityModel.Activity{}
-	tx := r.db.Find(&model)
+	tx := r.db.Unscoped().Find(&model)
 
 	if tx.Error != nil {
 		return []activitycore.Core{}, tx.Error
@@ -68,7 +80,7 @@ func (r *activityRepo) GetAll() ([]activitycore.Core, error) {
 
 func (r *activityRepo) GetSingle(activityCore activitycore.Core) (activitycore.Core, error) {
 	model := activityModel.ToModel(activityCore)
-	tx := r.db.First(&model)
+	tx := r.db.Unscoped().First(&model, activityCore.Id)
 
 	if tx.Error != nil {
 		return activitycore.Core{}, tx.Error

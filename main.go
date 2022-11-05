@@ -19,10 +19,9 @@ func main() {
 		JSONDecoder:  jsongoccy.Unmarshal,
 		ErrorHandler: exceptions.CustomErrorHandling,
 	})
+	app.Use(recover.New())
 
 	routes.InitRoutes(app, db)
-
-	app.Use(recover.New())
 
 	if err := app.Listen(":3030"); err != nil {
 		panic(err)

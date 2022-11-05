@@ -1,6 +1,7 @@
 package activityhandler
 
 import (
+	"devcode/config"
 	activitycore "devcode/domains/activity/core"
 	"devcode/exceptions"
 	"devcode/utils/helpers"
@@ -45,9 +46,9 @@ func (h *activityHandler) Create(c *fiber.Ctx) error {
 		Id:        result.Id,
 		Title:     result.Title,
 		Email:     result.Email,
-		CreatedAt: result.CreatedAt.String(),
-		UpdatedAt: result.UpdatedAt.String(),
-		DeleteAt:  result.DeletedAt.String(),
+		CreatedAt: result.CreatedAt.Format(config.LAYOUT_TIME),
+		UpdatedAt: result.UpdatedAt.Format(config.LAYOUT_TIME),
+		DeleteAt:  result.DeletedAt.Format(config.LAYOUT_TIME),
 	}))
 }
 
@@ -80,9 +81,9 @@ func (h *activityHandler) Update(c *fiber.Ctx) error {
 		Id:        result.Id,
 		Title:     result.Title,
 		Email:     result.Email,
-		CreatedAt: result.CreatedAt.String(),
-		UpdatedAt: result.UpdatedAt.String(),
-		DeleteAt:  result.DeletedAt.String(),
+		CreatedAt: result.CreatedAt.Format(config.LAYOUT_TIME),
+		UpdatedAt: result.UpdatedAt.Format(config.LAYOUT_TIME),
+		DeleteAt:  result.DeletedAt.Format(config.LAYOUT_TIME),
 	}))
 }
 
@@ -93,18 +94,11 @@ func (h *activityHandler) Delete(c *fiber.Ctx) error {
 		return exceptions.NewBadRequestError(err.Error())
 	}
 
-	result := h.service.Update(activitycore.Core{
+	h.service.Delete(activitycore.Core{
 		Id: uint(id),
 	})
 
-	return c.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(Response{
-		Id:        result.Id,
-		Title:     result.Title,
-		Email:     result.Email,
-		CreatedAt: result.CreatedAt.String(),
-		UpdatedAt: result.UpdatedAt.String(),
-		DeleteAt:  result.DeletedAt.String(),
-	}))
+	return c.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(map[string]interface{}{}))
 }
 
 func (h *activityHandler) FindAll(c *fiber.Ctx) error {
@@ -117,9 +111,9 @@ func (h *activityHandler) FindAll(c *fiber.Ctx) error {
 			Id:        data.Id,
 			Title:     data.Title,
 			Email:     data.Email,
-			CreatedAt: data.CreatedAt.String(),
-			UpdatedAt: data.UpdatedAt.String(),
-			DeleteAt:  data.DeletedAt.String(),
+			CreatedAt: data.CreatedAt.Format(config.LAYOUT_TIME),
+			UpdatedAt: data.UpdatedAt.Format(config.LAYOUT_TIME),
+			DeleteAt:  data.DeletedAt.Format(config.LAYOUT_TIME),
 		})
 	}
 
@@ -133,7 +127,7 @@ func (h *activityHandler) FindSingle(c *fiber.Ctx) error {
 		return exceptions.NewBadRequestError(err.Error())
 	}
 
-	result := h.service.Update(activitycore.Core{
+	result := h.service.FindSingle(activitycore.Core{
 		Id: uint(id),
 	})
 
@@ -141,8 +135,8 @@ func (h *activityHandler) FindSingle(c *fiber.Ctx) error {
 		Id:        result.Id,
 		Title:     result.Title,
 		Email:     result.Email,
-		CreatedAt: result.CreatedAt.String(),
-		UpdatedAt: result.UpdatedAt.String(),
-		DeleteAt:  result.DeletedAt.String(),
+		CreatedAt: result.CreatedAt.Format(config.LAYOUT_TIME),
+		UpdatedAt: result.UpdatedAt.Format(config.LAYOUT_TIME),
+		DeleteAt:  result.DeletedAt.Format(config.LAYOUT_TIME),
 	}))
 }

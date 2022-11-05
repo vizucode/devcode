@@ -30,14 +30,12 @@ func (s *activityService) Create(activityCore activitycore.Core) activitycore.Co
 
 func (s *activityService) Update(activityCore activitycore.Core) activitycore.Core {
 	result, err := s.repo.Update(activityCore)
-
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			panic(exceptions.NewNotFoundError(err.Error()))
-
-		} else {
 			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
-			panic(exceptions.NewInternalServerError(msg))
+			panic(exceptions.NewNotFoundError(msg))
+		} else {
+			panic(exceptions.NewInternalServerError(err.Error()))
 		}
 	}
 
@@ -48,7 +46,12 @@ func (s *activityService) Delete(activityCore activitycore.Core) activitycore.Co
 	result, err := s.repo.Delete(activityCore)
 
 	if err != nil {
-		panic(exceptions.NewInternalServerError(err.Error()))
+		if err == gorm.ErrRecordNotFound {
+			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
+			panic(exceptions.NewNotFoundError(msg))
+		} else {
+			panic(exceptions.NewInternalServerError(err.Error()))
+		}
 	}
 
 	return result
@@ -74,11 +77,11 @@ func (s *activityService) FindSingle(activityCore activitycore.Core) activitycor
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			panic(exceptions.NewNotFoundError(err.Error()))
+			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
+			panic(exceptions.NewNotFoundError(msg))
 
 		} else {
-			msg := fmt.Sprintf("Activity with ID %d Not Found", activityCore.Id)
-			panic(exceptions.NewInternalServerError(msg))
+			panic(exceptions.NewInternalServerError(err.Error()))
 		}
 	}
 
