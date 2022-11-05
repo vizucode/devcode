@@ -75,7 +75,7 @@ This project is a test project
 
 ### Built With
 
-This the tech stack that we used for developing Marketgate service
+This the tech stack that we used for developing Devcode service
 
 * [![Fiber][fiber]][fiber-url]
 * [![Gorm][gorm]][gorm-url]
