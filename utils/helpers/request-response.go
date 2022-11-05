@@ -19,5 +19,6 @@ func FailedResponse(status string, message string) map[string]interface{} {
 	return map[string]interface{}{
 		"status":  status,
 		"message": message,
+		"data":    map[string]interface{}{},
 	}
 }

@@ -60,8 +60,9 @@ func notFoundError(err interface{}, ctx *fiber.Ctx) bool {
 	response, ok := err.(*NotFoundErrorStruct)
 	if ok {
 		ctx.Status(http.StatusNotFound).JSON(map[string]interface{}{
-			"status":  "failure",
+			"status":  "Not Found",
 			"message": response.Error(),
+			"data":    map[string]interface{}{},
 		})
 
 		return true
