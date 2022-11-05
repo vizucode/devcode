@@ -17,10 +17,7 @@ type AppConfig struct {
 }
 
 func GetConfig() *AppConfig {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load()
 
 	MYSQL_PORT, err := strconv.Atoi(os.Getenv("MYSQL_PORT"))
 	if err != nil {
