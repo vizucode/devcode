@@ -78,9 +78,16 @@ func (r *todoRepo) Delete(todoCore todocore.Core) (todocore.Core, error) {
 	return todomodel.ToCore(model), nil
 }
 
-func (r *todoRepo) GetAll() ([]todocore.Core, error) {
+func (r *todoRepo) GetAll(todoCore todocore.Core) ([]todocore.Core, error) {
 	modelList := []todomodel.Todo{}
-	tx := r.db.Model(&todomodel.Todo{}).Unscoped().Find(&modelList)
+
+	tx := r.db.Model(&todomodel.Todo{}).Unscoped()
+
+	if todoCore.ActivityGroupId > 0 {
+		tx.Where("activity_group_id", todoCore.ActivityGroupId)
+	}
+
+	tx.Find(&modelList)
 	if tx.Error != nil {
 		return []todocore.Core{}, tx.Error
 	}

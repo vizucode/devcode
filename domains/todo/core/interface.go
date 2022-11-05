@@ -4,7 +4,7 @@ type IRepoTodo interface {
 	Insert(todoCore Core) (Core, error)
 	Update(todoCore Core) (Core, error)
 	Delete(todoCore Core) (Core, error)
-	GetAll() ([]Core, error)
+	GetAll(todoCore Core) ([]Core, error)
 	GetById(todoCore Core) (Core, error)
 }
 
