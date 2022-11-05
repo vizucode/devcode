@@ -4,6 +4,7 @@ import (
 	"devcode/utils/helpers"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -87,8 +88,8 @@ func validationError(err interface{}, ctx *fiber.Ctx) bool {
 		for _, err := range castedObject {
 			switch err.Tag() {
 			case "required":
-				report = fmt.Sprintf("%s is required",
-					err.Field())
+				report = fmt.Sprintf("%s cannot be null",
+					strings.ToLower(err.Field()))
 			case "email":
 				report = fmt.Sprintf("%s is not valid email",
 					err.Field())
@@ -101,7 +102,7 @@ func validationError(err interface{}, ctx *fiber.Ctx) bool {
 			}
 		}
 
-		ctx.Status(http.StatusBadRequest).JSON(helpers.FailedResponse(report))
+		ctx.Status(http.StatusBadRequest).JSON(helpers.FailedResponse("Bad Request", report))
 
 		return true
 	}

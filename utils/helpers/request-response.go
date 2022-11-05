@@ -15,9 +15,9 @@ func SuccessActionResponse(msg string) map[string]interface{} {
 	}
 }
 
-func FailedResponse(message string) map[string]interface{} {
+func FailedResponse(status string, message string) map[string]interface{} {
 	return map[string]interface{}{
-		"status":  "failure",
+		"status":  status,
 		"message": message,
 	}
 }
