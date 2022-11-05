@@ -3,6 +3,7 @@ package database
 import (
 	"devcode/config"
 	activitymodel "devcode/domains/activity/model"
+	todomodel "devcode/domains/todo/model"
 	"fmt"
 	"log"
 
@@ -30,5 +31,6 @@ func InitDB(cfg *config.AppConfig) *gorm.DB {
 func autoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
 		&activitymodel.Activity{},
+		&todomodel.Todo{},
 	)
 }
