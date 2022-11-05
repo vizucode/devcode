@@ -41,7 +41,15 @@ func (r *todoRepo) Update(todoCore todocore.Core) (todocore.Core, error) {
 		IsActive:        todoCore.IsActive,
 	}
 
-	tx := r.db.Model(&todomodel.Todo{}).Where("id", todoCore.Id).Updates(&model)
+	tx := r.db.Model(&todomodel.Todo{}).Where("id", todoCore.Id)
+
+	if todoCore.Title != "" {
+		tx.Select("title", "is_active")
+	} else {
+		tx.Select("is_active")
+	}
+
+	tx.Updates(&model)
 	if tx.Error != nil {
 		return todocore.Core{}, tx.Error
 	}

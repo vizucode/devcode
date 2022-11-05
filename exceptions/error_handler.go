@@ -89,8 +89,12 @@ func validationError(err interface{}, ctx *fiber.Ctx) bool {
 		for _, err := range castedObject {
 			switch err.Tag() {
 			case "required":
+				field := err.Field()
+				if strings.ToLower(field) == "activitygroupid" {
+					field = "activity_group_id"
+				}
 				report = fmt.Sprintf("%s cannot be null",
-					strings.ToLower(err.Field()))
+					strings.ToLower(field))
 			case "email":
 				report = fmt.Sprintf("%s is not valid email",
 					err.Field())

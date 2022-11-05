@@ -67,7 +67,7 @@ func (h *todoHandler) Update(ctx *fiber.Ctx) error {
 		IsActive: request.IsActive,
 	})
 
-	return ctx.Status(http.StatusCreated).JSON(helpers.SuccessGetResponseData(ToResponse(result)))
+	return ctx.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(ToResponse(result)))
 }
 
 func (h *todoHandler) Delete(ctx *fiber.Ctx) error {
@@ -77,23 +77,27 @@ func (h *todoHandler) Delete(ctx *fiber.Ctx) error {
 		panic(exceptions.NewBadRequestError(err.Error()))
 	}
 
-	result := h.service.Delete(todocore.Core{
+	h.service.Delete(todocore.Core{
 		Id: uint(id),
 	})
 
-	return ctx.Status(http.StatusCreated).JSON(helpers.SuccessGetResponseData(ToResponse(result)))
+	return ctx.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(map[string]interface{}{}))
 }
 
 func (h *todoHandler) FindAll(ctx *fiber.Ctx) error {
 	idParam := ctx.Query("activity_group_id")
-	id, err := strconv.Atoi(idParam)
-	if err != nil {
-		panic(exceptions.NewBadRequestError(err.Error()))
+	core := todocore.Core{
+		ActivityGroupId: 0,
+	}
+	if idParam != "" {
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			panic(exceptions.NewBadRequestError(err.Error()))
+		}
+		core.ActivityGroupId = uint(id)
 	}
 
-	results := h.service.FindAll(todocore.Core{
-		Id: uint(id),
-	})
+	results := h.service.FindAll(core)
 
 	response := []Response{}
 
@@ -101,7 +105,7 @@ func (h *todoHandler) FindAll(ctx *fiber.Ctx) error {
 		response = append(response, ToResponse(data))
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helpers.SuccessGetResponseData(response))
+	return ctx.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(response))
 }
 
 func (h *todoHandler) FindById(ctx *fiber.Ctx) error {
@@ -115,5 +119,5 @@ func (h *todoHandler) FindById(ctx *fiber.Ctx) error {
 		Id: uint(id),
 	})
 
-	return ctx.Status(http.StatusCreated).JSON(helpers.SuccessGetResponseData(ToResponse(result)))
+	return ctx.Status(http.StatusOK).JSON(helpers.SuccessGetResponseData(ToResponse(result)))
 }
