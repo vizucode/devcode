@@ -1,10 +1,12 @@
 package activitycore
 
+import "time"
+
 type Core struct {
 	Id        uint
 	Email     string
 	Title     string
-	CreatedAt string
-	UpdatedAt string
-	DeletedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt time.Time
 }
